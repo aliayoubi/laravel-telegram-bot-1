@@ -23,6 +23,6 @@ trait ManagesUsers
             return $custom($query);
         }
 
-        return $query->get();
+        return $query->orderBy('id', 'desc')->get();
     }
 }
