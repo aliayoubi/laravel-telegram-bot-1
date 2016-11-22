@@ -2,7 +2,7 @@
 
 namespace SumanIon\TelegramBot\Exceptions;
 
-class MethodNotFound extends \Exception
+class UnknownUpdateUser extends \Exception
 {
 
 }

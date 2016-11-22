@@ -4,22 +4,13 @@ namespace SumanIon\TelegramBot;
 
 abstract class Manager
 {
-    use Support\Logger;
-    use Support\ReferencesBotModel;
-    use Support\SendsApiRequests;
-    use Support\ManagesUpdates;
-    use Support\ManagesWebhooks;
-    use Support\NotifiesAllUsers;
+    use Features\ManagesUsers;
+    use Features\SendsApiRequests;
+    use Features\RegistersApiMethods;
+    use Features\ManagesUpdates;
 
     /**
-     * Actions are the best way to make the bot interactive.
-     *
-     * @var array
-     */
-    protected $actions = [];
-
-    /**
-     * API token for the bot used to be able to make API requests.
+     * Returns Access Token of the Bot.
      *
      * @return string
      */

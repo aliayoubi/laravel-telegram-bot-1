@@ -2,7 +2,7 @@
 
 namespace SumanIon\TelegramBot\Exceptions;
 
-class SkipAction extends \Exception
+class UnknownUpdateType extends \Exception
 {
 
 }

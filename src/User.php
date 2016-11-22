@@ -4,13 +4,16 @@ namespace SumanIon\TelegramBot;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TelegramBotUser extends Model
+class User extends Model
 {
-    use Support\ManagesBotUserPermissions;
+    use Features\ManagesUserAbilities;
+
+    /** @var string */
+    protected $table = 'telegram_bot_users';
 
     /** @var array */
     protected $fillable = [
-        'telegram_bot_id',
+        'manager',
         'chat_id',
         'first_name',
         'last_name',

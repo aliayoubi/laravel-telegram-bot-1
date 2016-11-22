@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTelegramBotsTable extends Migration
+class CreateTelegramBotAbilitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateTelegramBotsTable extends Migration
      */
     public function up()
     {
-        Schema::create('telegram_bots', function (Blueprint $table) {
+        Schema::create('telegram_bot_abilities', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('manager')->unique()->index();
-            $table->string('webhook_token')->unique()->index();
-            $table->integer('offset')->default(0);
+
+            $table->string('name')->unique();
+
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateTelegramBotsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('telegram_bots');
+        Schema::drop('telegram_bot_abilities');
     }
 }

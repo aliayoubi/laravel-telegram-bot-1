@@ -2,7 +2,7 @@
 
 namespace SumanIon\TelegramBot\Exceptions;
 
-class StopActions extends \Exception
+class UnknownUpdateId extends \Exception
 {
 
 }

@@ -15,17 +15,16 @@ class CreateTelegramBotUsersTable extends Migration
     {
         Schema::create('telegram_bot_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('telegram_bot_id')->unsigned()->index();
+
+            $table->string('manager');
             $table->integer('chat_id');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('username')->nullable();
-            $table->timestamps();
 
-            $table->foreign('telegram_bot_id')
-                  ->references('id')
-                  ->on('telegram_bots')
-                  ->onDelete('cascade');
+            $table->unique(['manager', 'chat_id']);
+
+            $table->timestamps();
         });
     }
 

@@ -14,7 +14,6 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.0",
-        "laravel/framework": "5.3.*",
         "guzzlehttp/guzzle": "^6.2"
     },
     "autoload": {

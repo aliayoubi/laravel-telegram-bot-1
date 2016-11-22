@@ -2,118 +2,32 @@
 
 namespace SumanIon\TelegramBot;
 
-use stdClass;
+use Illuminate\Database\Eloquent\Model;
 
-class Update extends stdClass
+class Update extends Model
 {
-    /**
-     * Parse update data.
-     *
-     * @param mixed $update
-     */
-    public function __construct($update)
-    {
-        $this->fromString($update);
-        $this->fromObject($update);
-        $this->fromArray($update);
+    /** @var string */
+    protected $table = 'telegram_bot_updates';
 
-        $this->command      = $this->command();
-        $this->commandValue = $this->commandValue();
-        $this->text         = $this->text();
-    }
+    /** @var array */
+    protected $fillable = [
+        'manager',
+        'user_id',
+        'content'
+    ];
+
+    /** @var null|\SumanIon\TelegramBot\ParsedUpdate */
+    protected $parsedUpdate;
 
     /**
-     * Parse update from string.
+     * Converts update content to ParsedUpdate object.
      *
-     * @param  mixed $update
+     * @param  string $content
      *
-     * @return void
+     * @return \SumanIon\TelegramBot\ParsedUpdate
      */
-    public function fromString($update)
+    public function getContentAttribute($content)
     {
-        if (is_string($update)) {
-            $this->fromObject(json_decode($update));
-        }
-    }
-
-    /**
-     * Parse update from stdClass.
-     *
-     * @param  mixed $update
-     *
-     * @return void
-     */
-    public function fromObject($update)
-    {
-        if ($update instanceof stdClass) {
-            foreach ($update as $key => $value) {
-                $this->{$key} = $value;
-            }
-        }
-    }
-
-    /**
-     * Parse update from array.
-     *
-     * @param  mixed $update
-     *
-     * @return void
-     */
-    public function fromArray($update)
-    {
-        if (is_array($update)) {
-            foreach ($update as $key => $value) {
-                $this->{$key} = $value;
-            }
-        }
-    }
-
-    /**
-     * Get text from the update.
-     *
-     * @return mixed
-     */
-    public function text()
-    {
-        return $this->message->text ?? $this->edited_message->text ?? null;
-    }
-
-    /**
-     * Parse command from the update.
-     *
-     * @return array
-     */
-    public function parseCommand():array
-    {
-        $text = $this->message->text ?? $this->edited_message->text ?? '';
-
-        if (preg_match('/^(\:|\/)(\S+)(.*?)?$/', $text, $matches)) {
-            return [
-                mb_strtolower($matches[2]),
-                trim($matches[3])
-            ];
-        }
-
-        return [null, null];
-    }
-
-    /**
-     * Get the command name from the update.
-     *
-     * @return string|null
-     */
-    public function command()
-    {
-        return $this->parseCommand()[0];
-    }
-
-    /**
-     * Get command value from the update.
-     *
-     * @return string|null
-     */
-    public function commandValue()
-    {
-        return $this->parseCommand()[1];
+        return $this->parsedUpdate ? $this->parsedUpdate : ($this->parsedUpdate = new ParsedUpdate($content));
     }
 }
