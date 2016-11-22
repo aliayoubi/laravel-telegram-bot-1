@@ -44,8 +44,8 @@ trait SendsApiRequests
     /**
      * Parses Api request responses.
      *
-     * @param  Response $response
-     * @param  string   $url
+     * @param  \GuzzleHttp\Psr7\Response $response
+     * @param  string                    $url
      *
      * @return array
      */
