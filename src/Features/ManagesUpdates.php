@@ -18,7 +18,7 @@ trait ManagesUpdates
      */
     public function webhook(string $content)
     {
-        return $this->processUpdate(new ParsedUpdate($content));
+        $this->processUpdate(new ParsedUpdate($content));
     }
 
     /**
@@ -37,7 +37,7 @@ trait ManagesUpdates
     /**
      * Processes a new update of the Bot.
      *
-     * @param  ParsedUpdate $update
+     * @param  \SumanIon\TelegramBot\ParsedUpdate $update
      *
      * @return void
      */
