@@ -2,7 +2,10 @@
 
 namespace SumanIon\TelegramBot\Features;
 
+use Illuminate\Support\Facades\Queue;
 use SumanIon\TelegramBot\ParsedUpdate;
+use SumanIon\TelegramBot\Jobs\SendRequest;
+use SumanIon\TelegramBot\Methods\AdvancedMessage;
 
 trait RegistersApiMethods
 {
@@ -56,5 +59,27 @@ trait RegistersApiMethods
     public function getWebhookInfo():ParsedUpdate
     {
         return current($this->sendRequest('GET', 'getWebhookInfo'));
+    }
+
+    /**
+     * Sends a message to a bot user.
+     *
+     * @param  mixed       $user
+     * @param  string|null $text
+     * @param  array       $options
+     *
+     * @return void
+     */
+    public function sendMessage($user, string $text = null, array $options = [])
+    {
+        if (func_num_args() === 1) {
+            return new AdvancedMessage($this, $user);
+        }
+
+        $options['chat_id'] = $this->chatId($user);
+        $options['text']    = $text;
+        $url                = $this->url('sendMessage', $options);
+
+        Queue::push(new SendRequest('GET', $url));
     }
 }

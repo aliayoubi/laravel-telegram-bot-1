@@ -6,3 +6,8 @@
 # Telegram Bot Manager for Laravel
 
 > Version 2.0 is under development. Coming soon.
+> 
+
+### Notes
+
+- Game buttons are not currently supported (as of v2.0).

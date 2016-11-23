@@ -25,4 +25,16 @@ trait ManagesUsers
 
         return $query->orderBy('id', 'desc')->get();
     }
+
+    /**
+     * Returns chat id of the given user.
+     *
+     * @param  mixed $user
+     *
+     * @return int
+     */
+    public function chatId($user):int
+    {
+        return $user instanceof User ? $user->chat_id : (int)$user;
+    }
 }
