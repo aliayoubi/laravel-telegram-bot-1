@@ -10,6 +10,18 @@ use SumanIon\TelegramBot\ParsedUpdate;
 trait ManagesUpdates
 {
     /**
+     * Handles a new webhook.
+     *
+     * @param  string $content
+     *
+     * @return void
+     */
+    public function webhook(string $content)
+    {
+        return $this->processUpdate(new ParsedUpdate($content));
+    }
+
+    /**
      * Handles new Bot updates.
      *
      * @return void

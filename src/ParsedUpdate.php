@@ -21,7 +21,7 @@ class ParsedUpdate
      */
     public function __construct(string $update)
     {
-        $this->update = json_decode($update, true);
+        $this->update = json_decode($update, true) ?: [];
     }
 
     /**

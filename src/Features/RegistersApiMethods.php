@@ -9,7 +9,7 @@ trait RegistersApiMethods
     /**
      * Returns basic information about current bot.
      *
-     * @return array
+     * @return \SumanIon\TelegramBot\ParsedUpdate
      */
     public function getMe():ParsedUpdate
     {
@@ -32,5 +32,29 @@ trait RegistersApiMethods
             'limit'   => $limit,
             'timeout' => $timeout
         ]);
+    }
+
+    /**
+     * Specifies an url to receive incoming updates via an outgoing webhook.
+     *
+     * @param  string|null $url
+     *
+     * @return \SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function setWebhook(string $url = null):ParsedUpdate
+    {
+        return current($this->sendRequest('GET', 'setWebhook', [
+            'url' => $url
+        ]));
+    }
+
+    /**
+     * Returns information about current status of webhook.
+     *
+     * @return \SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function getWebhookInfo():ParsedUpdate
+    {
+        return current($this->sendRequest('GET', 'getWebhookInfo'));
     }
 }
