@@ -14,7 +14,10 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.0",
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "illuminate/support": "^5.3",
+        "illuminate/database": "^5.3",
+        "illuminate/container": "^5.3"
     },
     "autoload": {
         "psr-4": {
