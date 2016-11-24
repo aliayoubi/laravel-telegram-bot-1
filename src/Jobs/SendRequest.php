@@ -3,6 +3,7 @@
 namespace SumanIon\TelegramBot\Jobs;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -38,6 +39,16 @@ class SendRequest implements ShouldQueue
      */
     public function handle()
     {
+        if (isset($this->fields['multipart'])) {
+
+            $this->fields['multipart'] = (new Collection((array)$this->fields['multipart']))->map(function ($field) {
+
+                $field['contents'] = fopen($field['contents'], 'r');
+
+                return $field;
+            })->all();
+        }
+
         $response = (new Client( [ 'http_errors' => false ]))->request($this->type, $this->url, $this->fields);
         $response = (string)$response->getBody();
 

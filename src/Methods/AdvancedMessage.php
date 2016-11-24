@@ -13,7 +13,7 @@ class AdvancedMessage
     protected $user;
 
     /** @var string */
-    protected $text = '';
+    protected $text;
 
     /** @var array */
     protected $options = [];
@@ -340,11 +340,11 @@ class AdvancedMessage
     }
 
     /**
-     * Sends the advanced message to the user.
+     * Creates the final version of options array.
      *
      * @return void
      */
-    public function send()
+    protected function formatOptions()
     {
         $this->options['reply_markup'] = isset($this->options['reply_markup']) ? (array)$this->options['reply_markup'] : [];
 
@@ -361,7 +361,26 @@ class AdvancedMessage
         }
 
         $this->options['reply_markup'] = json_encode($this->options['reply_markup']);
+    }
 
+    /**
+     * Determines how the advanced message should be sent.
+     *
+     * @return void
+     */
+    protected function handle()
+    {
         $this->manager->sendMessage($this->user, $this->text, $this->options);
+    }
+
+    /**
+     * Sends the advanced message to the user.
+     *
+     * @return void
+     */
+    public function send()
+    {
+        $this->formatOptions();
+        $this->handle();
     }
 }

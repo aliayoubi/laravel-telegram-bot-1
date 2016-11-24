@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Queue;
 use SumanIon\TelegramBot\ParsedUpdate;
 use SumanIon\TelegramBot\Jobs\SendRequest;
 use SumanIon\TelegramBot\Methods\AdvancedMessage;
+use SumanIon\TelegramBot\Methods\AdvancedPhotoMessage;
 
 trait RegistersApiMethods
 {
@@ -40,11 +41,11 @@ trait RegistersApiMethods
     /**
      * Specifies an url to receive incoming updates via an outgoing webhook.
      *
-     * @param  string|null $url
+     * @param  string $url
      *
      * @return \SumanIon\TelegramBot\ParsedUpdate
      */
-    public function setWebhook(string $url = null):ParsedUpdate
+    public function setWebhook(string $url = ''):ParsedUpdate
     {
         return current($this->sendRequest('GET', 'setWebhook', [
             'url' => $url
@@ -62,15 +63,30 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends a message to a bot user.
+     * Send some information to a bot user.
      *
-     * @param  mixed       $user
-     * @param  string|null $text
-     * @param  array       $options
+     * @param  string $type
+     * @param  string $method
+     * @param  array  $options
+     * @param  array  $fields
      *
      * @return void
      */
-    public function sendMessage($user, string $text = null, array $options = [])
+    public function sendInfo(string $type, string $method, array $options = [], array $fields = [])
+    {
+        Queue::push(new SendRequest($type, $this->url($method, $options), $fields));
+    }
+
+    /**
+     * Sends a message to a bot user.
+     *
+     * @param  mixed  $user
+     * @param  string $text
+     * @param  array  $options
+     *
+     * @return void
+     */
+    public function sendMessage($user, string $text = '', array $options = [])
     {
         if (func_num_args() === 1) {
             return new AdvancedMessage($this, $user);
@@ -79,7 +95,7 @@ trait RegistersApiMethods
         $options['chat_id'] = $this->chatId($user);
         $options['text']    = $text;
 
-        Queue::push(new SendRequest('GET', $this->url('sendMessage', $options)));
+        $this->sendInfo('GET', 'sendMessage', $options);
     }
 
     /**
@@ -94,11 +110,49 @@ trait RegistersApiMethods
      */
     public function forwardMessage($user, int $from_chat_id, int $message_id, bool $disable_notification = false)
     {
-        Queue::push(new SendRequest('GET', $this->url('forwardMessage', [
+        $this->sendInfo('GET', 'forwardMessage', [
             'chat_id'              => $this->chatId($user),
             'from_chat_id'         => $from_chat_id,
             'message_id'           => $message_id,
             'disable_notification' => $disable_notification
-        ])));
+        ]);
+    }
+
+    /**
+     * Sends a photo to a bot user.
+     *
+     * @param  mixed  $user
+     * @param  string $location
+     * @param  string $caption
+     * @param  array  $options
+     *
+     * @return void
+     */
+    public function sendPhoto($user, string $location = '', string $caption = '', array $options = [])
+    {
+        if (func_num_args() === 1) {
+            return new AdvancedPhotoMessage($this, $user);
+        }
+
+        $type               = 'GET';
+        $fields             = [];
+        $options['chat_id'] = $this->chatId($user);
+        $options['caption'] = $caption;
+
+        if (filter_var($location, FILTER_VALIDATE_URL) !== false or !is_file($location)) {
+
+            $options['photo'] = $location;
+        } else {
+
+            $type = 'POST';
+            $fields['multipart'] = [
+                [
+                    'name' => 'photo',
+                    'contents' => $location
+                ]
+            ];
+        }
+
+        $this->sendInfo($type, 'sendPhoto', $options, $fields);
     }
 }
