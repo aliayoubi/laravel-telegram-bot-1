@@ -12,6 +12,7 @@ use SumanIon\TelegramBot\Methods\AdvancedVideoMessage;
 use SumanIon\TelegramBot\Methods\AdvancedVoiceMessage;
 use SumanIon\TelegramBot\Methods\AdvancedStickerMessage;
 use SumanIon\TelegramBot\Methods\AdvancedDocumentMessage;
+use SumanIon\TelegramBot\Methods\AdvancedLocationMessage;
 
 trait RegistersApiMethods
 {
@@ -347,5 +348,28 @@ trait RegistersApiMethods
         }
 
         $this->sendInfo($type, 'sendVoice', $options, $fields);
+    }
+
+    /**
+     * Sends a location to a bot user.
+     *
+     * @param  mixed $user
+     * @param  float $latitude
+     * @param  float $longitude
+     * @param  array $options
+     *
+     * @return void
+     */
+    public function sendLocation($user, float $latitude = 0, float $longitude = 0, array $options = [])
+    {
+        if (func_num_args() === 1) {
+            return new AdvancedLocationMessage($this, $user);
+        }
+
+        $options['chat_id']   = $this->chatId($user);
+        $options['latitude']  = $latitude;
+        $options['longitude'] = $longitude;
+
+        $this->sendInfo('GET', 'sendLocation', $options);
     }
 }
