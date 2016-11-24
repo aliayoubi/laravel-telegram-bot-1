@@ -25,7 +25,7 @@ class AdvancedPhotoMessage extends AdvancedMessage
     }
 
     /**
-     * Adds a photo caption to the advanced message.
+     * Sets the caption of the photo.
      *
      * @param  string $caption
      *
@@ -39,7 +39,7 @@ class AdvancedPhotoMessage extends AdvancedMessage
     }
 
     /**
-     * Handle the request.
+     * Sends the request.
      *
      * @return void
      */

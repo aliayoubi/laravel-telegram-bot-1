@@ -34,7 +34,7 @@ class AdvancedAudioMessage extends AdvancedMessage
     }
 
     /**
-     * Adds a caption to the audio in the advanced message.
+     * Sets the caption of the audio file.
      *
      * @param  string $caption
      *
@@ -90,7 +90,7 @@ class AdvancedAudioMessage extends AdvancedMessage
     }
 
     /**
-     * Handle the request.
+     * Sends the request.
      *
      * @return void
      */
