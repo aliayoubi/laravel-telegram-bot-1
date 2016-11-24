@@ -10,7 +10,7 @@ class AdvancedMessage
     protected $manager;
 
     /** @var mixed */
-    protected $user;
+    protected $chat;
 
     /** @var string */
     protected $text = '';
@@ -37,12 +37,12 @@ class AdvancedMessage
      * Creates a new advanced message.
      *
      * @param \SumanIon\TelegramBot\Manager $manager
-     * @param mixed                         $user
+     * @param mixed                         $chat
      */
-    public function __construct(Manager $manager, $user)
+    public function __construct(Manager $manager, $chat)
     {
         $this->manager = $manager;
-        $this->user    = $user;
+        $this->chat    = $chat;
     }
 
     /**
@@ -370,11 +370,11 @@ class AdvancedMessage
      */
     protected function handle()
     {
-        $this->manager->sendMessage($this->user, $this->text, $this->options);
+        $this->manager->sendMessage($this->chat, $this->text, $this->options);
     }
 
     /**
-     * Sends the advanced message to the user.
+     * Sends the advanced message to a chat.
      *
      * @return void
      */

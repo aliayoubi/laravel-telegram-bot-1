@@ -59,6 +59,6 @@ class AdvancedVoiceMessage extends AdvancedMessage
      */
     protected function handle()
     {
-        $this->manager->sendVoice($this->user, $this->voice, $this->caption, $this->options);
+        $this->manager->sendVoice($this->chat, $this->voice, $this->caption, $this->options);
     }
 }

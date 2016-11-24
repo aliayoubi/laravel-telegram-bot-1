@@ -2,7 +2,7 @@
 
 namespace SumanIon\TelegramBot\Features;
 
-use SumanIon\TelegramBot\User;
+use SumanIon\TelegramBot\Chat;
 use SumanIon\TelegramBot\Update;
 use Illuminate\Support\Collection;
 use SumanIon\TelegramBot\ParsedUpdate;
@@ -43,23 +43,22 @@ trait ManagesUpdates
      */
     public function processUpdate(ParsedUpdate $update)
     {
-        $from = $update->from();
-        $user = User::where('chat_id', $from->id)->first();
+        $update_chat = $update->chat();
+        $chat        = Chat::where('chat_id', $update_chat->id)->first();
 
-        if (!$user) {
+        if (!$chat) {
 
-            $user = User::create([
-                'manager'    => get_class($this),
-                'chat_id'    => $from->id,
-                'first_name' => $from->first_name,
-                'last_name'  => $from->last_name,
-                'username'   => $from->username
+            $chat = Chat::create([
+                'manager' => get_class($this),
+                'chat_id' => $update_chat->id,
+                'type'    => $update_chat->type,
+                'title'   => $update_chat->title
             ]);
         }
 
         $update = Update::create([
             'manager' => get_class($this),
-            'user_id' => $user->id,
+            'chat_id' => $chat->id,
             'content' => $update->toJson()
         ]);
 

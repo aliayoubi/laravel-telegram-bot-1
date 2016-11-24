@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTelegramBotUsersTable extends Migration
+class CreateTelegramBotChatsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateTelegramBotUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('telegram_bot_users', function (Blueprint $table) {
+        Schema::create('telegram_bot_chats', function (Blueprint $table) {
             $table->increments('id');
 
             $table->string('manager');
             $table->integer('chat_id');
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->string('username')->nullable();
+            $table->string('type');
+            $table->string('title')->nullable();
 
             $table->unique(['manager', 'chat_id']);
 
@@ -35,6 +34,6 @@ class CreateTelegramBotUsersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('telegram_bot_users');
+        Schema::drop('telegram_bot_chats');
     }
 }

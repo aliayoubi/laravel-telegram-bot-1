@@ -4,20 +4,20 @@ namespace SumanIon\TelegramBot\Features;
 
 use SumanIon\TelegramBot\Ability;
 
-trait ManagesUserAbilities
+trait ManagesChatAbilities
 {
     /**
-     * A user may have many abilities.
+     * A chat may have many abilities.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function abilities()
     {
-        return $this->belongsToMany(Ability::class, 'telegram_bot_user_abilities', 'user_id', 'ability_id');
+        return $this->belongsToMany(Ability::class, 'telegram_bot_chat_abilities', 'chat_id', 'ability_id');
     }
 
     /**
-     * Determines if a user has specific abilities.
+     * Determines if a chat has specific abilities.
      *
      * @param  string|array $abilities
      * @param  bool         $strict
@@ -39,7 +39,7 @@ trait ManagesUserAbilities
     }
 
     /**
-     * Adds new abilities to a user.
+     * Adds new abilities to a chat.
      *
      * @param  string|array $abilities
      *
@@ -52,7 +52,7 @@ trait ManagesUserAbilities
     }
 
     /**
-     * Removes abilities from a user.
+     * Removes abilities from a chat.
      *
      * @param  string|array $abilities
      *

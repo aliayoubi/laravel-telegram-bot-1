@@ -87,6 +87,6 @@ class AdvancedVideoMessage extends AdvancedMessage
      */
     protected function handle()
     {
-        $this->manager->sendVideo($this->user, $this->video, $this->caption, $this->options);
+        $this->manager->sendVideo($this->chat, $this->video, $this->caption, $this->options);
     }
 }

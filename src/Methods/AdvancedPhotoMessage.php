@@ -45,6 +45,6 @@ class AdvancedPhotoMessage extends AdvancedMessage
      */
     protected function handle()
     {
-        $this->manager->sendPhoto($this->user, $this->photo, $this->caption, $this->options);
+        $this->manager->sendPhoto($this->chat, $this->photo, $this->caption, $this->options);
     }
 }

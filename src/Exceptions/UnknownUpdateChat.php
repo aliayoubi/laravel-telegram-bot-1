@@ -2,7 +2,7 @@
 
 namespace SumanIon\TelegramBot\Exceptions;
 
-class UnknownUpdateUser extends \Exception
+class UnknownUpdateChat extends \Exception
 {
 
 }

@@ -117,6 +117,6 @@ class AdvancedVenueMessage extends AdvancedMessage
      */
     protected function handle()
     {
-        $this->manager->sendVenue($this->user, $this->latitude, $this->longitude, $this->title, $this->address, $this->options);
+        $this->manager->sendVenue($this->chat, $this->latitude, $this->longitude, $this->title, $this->address, $this->options);
     }
 }

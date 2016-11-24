@@ -87,6 +87,6 @@ class AdvancedAudioMessage extends AdvancedMessage
      */
     protected function handle()
     {
-        $this->manager->sendAudio($this->user, $this->audio, $this->caption, $this->options);
+        $this->manager->sendAudio($this->chat, $this->audio, $this->caption, $this->options);
     }
 }

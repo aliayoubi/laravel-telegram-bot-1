@@ -45,6 +45,6 @@ class AdvancedDocumentMessage extends AdvancedMessage
      */
     protected function handle()
     {
-        $this->manager->sendDocument($this->user, $this->document, $this->caption, $this->options);
+        $this->manager->sendDocument($this->chat, $this->document, $this->caption, $this->options);
     }
 }

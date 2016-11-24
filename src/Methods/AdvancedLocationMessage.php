@@ -69,6 +69,6 @@ class AdvancedLocationMessage extends AdvancedMessage
      */
     protected function handle()
     {
-        $this->manager->sendLocation($this->user, $this->latitude, $this->longitude, $this->options);
+        $this->manager->sendLocation($this->chat, $this->latitude, $this->longitude, $this->options);
     }
 }

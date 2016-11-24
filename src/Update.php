@@ -12,7 +12,7 @@ class Update extends Model
     /** @var array */
     protected $fillable = [
         'manager',
-        'user_id',
+        'chat_id',
         'content'
     ];
 

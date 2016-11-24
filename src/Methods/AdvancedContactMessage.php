@@ -62,6 +62,6 @@ class AdvancedContactMessage extends AdvancedMessage
      */
     protected function handle()
     {
-        $this->manager->sendContact($this->user, $this->phoneNumber, $this->firstName, $this->lastName, $this->options);
+        $this->manager->sendContact($this->chat, $this->phoneNumber, $this->firstName, $this->lastName, $this->options);
     }
 }

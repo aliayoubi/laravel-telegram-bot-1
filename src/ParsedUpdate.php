@@ -7,7 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use SumanIon\TelegramBot\Exceptions\UnknownUpdateId;
 use SumanIon\TelegramBot\Exceptions\UnknownUpdateType;
-use SumanIon\TelegramBot\Exceptions\UnknownUpdateUser;
+use SumanIon\TelegramBot\Exceptions\UnknownUpdateChat;
 
 class ParsedUpdate
 {
@@ -79,17 +79,15 @@ class ParsedUpdate
     /**
      * Returns information about the user who initiated the update.
      *
-     * @throws \SumanIon\TelegramBot\Exceptions\UnknownUpdateUser
-     *
-     * @return stdClass
+     * @return null|stdClass
      */
-    public function from():stdClass
+    public function from()
     {
         $type = $this->type();
-        $from = $this->update[$type]['from'] ?? $this->update[$type]['chat'] ?? null;
+        $from = $this->update[$type]['from'] ?? null;
 
         if (!$from or !isset($from['id'])) {
-            throw new UnknownUpdateUser($this->toJson());
+            return null;
         }
 
         return (object)[
@@ -97,6 +95,28 @@ class ParsedUpdate
             'first_name' => $from['first_name'] ?? null,
             'last_name'  => $from['last_name'] ?? null,
             'username'   => $from['username'] ?? null
+        ];
+    }
+
+    /**
+     * Returns information about the chat who initiated the update.
+     *
+     * @throws \SumanIon\TelegramBot\Exceptions\UnknownUpdateChat
+     *
+     * @return stdClass
+     */
+    public function chat():stdClass
+    {
+        $chat = $this->update[$this->type()]['chat'] ?? null;
+
+        if (!$chat or !isset($chat['id']) or !isset($chat['type'])) {
+            throw new UnknownUpdateChat($this->toJson());
+        }
+
+        return (object)[
+            'id'    => $chat['id'],
+            'type'  => $chat['type'],
+            'title' => $chat['title'] ?? null
         ];
     }
 

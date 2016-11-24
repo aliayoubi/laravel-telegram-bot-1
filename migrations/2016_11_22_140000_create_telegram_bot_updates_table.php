@@ -17,14 +17,14 @@ class CreateTelegramBotUpdatesTable extends Migration
             $table->increments('id');
 
             $table->string('manager');
-            $table->integer('user_id')->unsigned();
+            $table->integer('chat_id')->unsigned();
             $table->text('content')->nullable();
 
             $table->timestamps();
 
-            $table->foreign('user_id')
+            $table->foreign('chat_id')
                   ->references('id')
-                  ->on('telegram_bot_users')
+                  ->on('telegram_bot_chats')
                   ->onDelete('cascade');
         });
     }

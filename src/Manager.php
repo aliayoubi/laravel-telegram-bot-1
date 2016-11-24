@@ -5,7 +5,7 @@ namespace SumanIon\TelegramBot;
 abstract class Manager
 {
     use Features\FindsManagerUsingToken;
-    use Features\ManagesUsers;
+    use Features\ManagesChats;
     use Features\SendsApiRequests;
     use Features\RegistersApiMethods;
     use Features\ManagesUpdates;

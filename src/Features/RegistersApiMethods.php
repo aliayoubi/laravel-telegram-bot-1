@@ -73,16 +73,16 @@ trait RegistersApiMethods
     /**
      * Lists profile pictures of a user.
      *
-     * @param  mixed  $user
-     * @param  int    $offset
-     * @param  int    $limit
+     * @param  int $user_id
+     * @param  int $offset
+     * @param  int $limit
      *
      * @return bool|\SumanIon\TelegramBot\ParsedUpdate
      */
-    public function getUserProfilePhotos($user, int $offset = 0, int $limit = 100)
+    public function getUserProfilePhotos(int $user_id, int $offset = 0, int $limit = 100)
     {
         return current($this->sendRequest('GET', 'getUserProfilePhotos', [
-            'user_id' => $this->chatId($user)
+            'user_id' => $user_id
         ]));
     }
 
@@ -101,7 +101,7 @@ trait RegistersApiMethods
     }
 
     /**
-     * Send some information to a bot user.
+     * Sends some information to a chat.
      *
      * @param  string $type
      * @param  string $method
@@ -116,40 +116,40 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends a message to a bot user.
+     * Sends a message to a chat.
      *
-     * @param  mixed  $user
+     * @param  mixed  $chat
      * @param  string $text
      * @param  array  $options
      *
      * @return void
      */
-    public function sendMessage($user, string $text = '', array $options = [])
+    public function sendMessage($chat, string $text = '', array $options = [])
     {
         if (func_num_args() === 1) {
-            return new AdvancedMessage($this, $user);
+            return new AdvancedMessage($this, $chat);
         }
 
-        $options['chat_id'] = $this->chatId($user);
+        $options['chat_id'] = $this->chatId($chat);
         $options['text']    = $text;
 
         $this->sendInfo('GET', 'sendMessage', $options);
     }
 
     /**
-     * Forwards a message to a bot user.
+     * Forwards a message to a chat.
      *
-     * @param  mixed  $user
+     * @param  mixed  $chat
      * @param  int    $from_chat_id
      * @param  int    $message_id
      * @param  bool   $disable_notification
      *
      * @return void
      */
-    public function forwardMessage($user, int $from_chat_id, int $message_id, bool $disable_notification = false)
+    public function forwardMessage($chat, int $from_chat_id, int $message_id, bool $disable_notification = false)
     {
         $this->sendInfo('GET', 'forwardMessage', [
-            'chat_id'              => $this->chatId($user),
+            'chat_id'              => $this->chatId($chat),
             'from_chat_id'         => $from_chat_id,
             'message_id'           => $message_id,
             'disable_notification' => $disable_notification
@@ -157,24 +157,24 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends a photo to a bot user.
+     * Sends a photo to a chat.
      *
-     * @param  mixed  $user
+     * @param  mixed  $chat
      * @param  string $location
      * @param  string $caption
      * @param  array  $options
      *
      * @return void
      */
-    public function sendPhoto($user, string $location = '', string $caption = '', array $options = [])
+    public function sendPhoto($chat, string $location = '', string $caption = '', array $options = [])
     {
         if (func_num_args() === 1) {
-            return new AdvancedPhotoMessage($this, $user);
+            return new AdvancedPhotoMessage($this, $chat);
         }
 
         $type               = 'GET';
         $fields             = [];
-        $options['chat_id'] = $this->chatId($user);
+        $options['chat_id'] = $this->chatId($chat);
         $options['caption'] = $caption;
 
         if (filter_var($location, FILTER_VALIDATE_URL) !== false or !is_file($location)) {
@@ -195,24 +195,24 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends an audio file to a bot user.
+     * Sends an audio file to a chat.
      *
-     * @param  mixed  $user
+     * @param  mixed  $chat
      * @param  string $location
      * @param  string $caption
      * @param  array  $options
      *
      * @return void
      */
-    public function sendAudio($user, string $location = '', string $caption = '', array $options = [])
+    public function sendAudio($chat, string $location = '', string $caption = '', array $options = [])
     {
         if (func_num_args() === 1) {
-            return new AdvancedAudioMessage($this, $user);
+            return new AdvancedAudioMessage($this, $chat);
         }
 
         $type               = 'GET';
         $fields             = [];
-        $options['chat_id'] = $this->chatId($user);
+        $options['chat_id'] = $this->chatId($chat);
         $options['caption'] = $caption;
 
         if (filter_var($location, FILTER_VALIDATE_URL) !== false or !is_file($location)) {
@@ -233,24 +233,24 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends a document to a bot user.
+     * Sends a document to a chat.
      *
-     * @param  mixed  $user
+     * @param  mixed  $chat
      * @param  string $location
      * @param  string $caption
      * @param  array  $options
      *
      * @return void
      */
-    public function sendDocument($user, string $location = '', string $caption = '', array $options = [])
+    public function sendDocument($chat, string $location = '', string $caption = '', array $options = [])
     {
         if (func_num_args() === 1) {
-            return new AdvancedDocumentMessage($this, $user);
+            return new AdvancedDocumentMessage($this, $chat);
         }
 
         $type               = 'GET';
         $fields             = [];
-        $options['chat_id'] = $this->chatId($user);
+        $options['chat_id'] = $this->chatId($chat);
         $options['caption'] = $caption;
 
         if (filter_var($location, FILTER_VALIDATE_URL) !== false or !is_file($location)) {
@@ -271,23 +271,23 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends a sticker to a bot user.
+     * Sends a sticker to a chat.
      *
-     * @param  mixed  $user
+     * @param  mixed  $chat
      * @param  string $location
      * @param  array  $options
      *
      * @return void
      */
-    public function sendSticker($user, string $location = '', array $options = [])
+    public function sendSticker($chat, string $location = '', array $options = [])
     {
         if (func_num_args() === 1) {
-            return new AdvancedStickerMessage($this, $user);
+            return new AdvancedStickerMessage($this, $chat);
         }
 
         $type               = 'GET';
         $fields             = [];
-        $options['chat_id'] = $this->chatId($user);
+        $options['chat_id'] = $this->chatId($chat);
 
         if (filter_var($location, FILTER_VALIDATE_URL) !== false or !is_file($location)) {
 
@@ -307,24 +307,24 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends a video file to a bot user.
+     * Sends a video file to a chat.
      *
-     * @param  mixed  $user
+     * @param  mixed  $chat
      * @param  string $location
      * @param  string $caption
      * @param  array  $options
      *
      * @return void
      */
-    public function sendVideo($user, string $location = '', string $caption = '', array $options = [])
+    public function sendVideo($chat, string $location = '', string $caption = '', array $options = [])
     {
         if (func_num_args() === 1) {
-            return new AdvancedVideoMessage($this, $user);
+            return new AdvancedVideoMessage($this, $chat);
         }
 
         $type               = 'GET';
         $fields             = [];
-        $options['chat_id'] = $this->chatId($user);
+        $options['chat_id'] = $this->chatId($chat);
         $options['caption'] = $caption;
 
         if (filter_var($location, FILTER_VALIDATE_URL) !== false or !is_file($location)) {
@@ -345,24 +345,24 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends a voice file to a bot user.
+     * Sends a voice file to a chat.
      *
-     * @param  mixed  $user
+     * @param  mixed  $chat
      * @param  string $location
      * @param  string $caption
      * @param  array  $options
      *
      * @return void
      */
-    public function sendVoice($user, string $location = '', string $caption = '', array $options = [])
+    public function sendVoice($chat, string $location = '', string $caption = '', array $options = [])
     {
         if (func_num_args() === 1) {
-            return new AdvancedVoiceMessage($this, $user);
+            return new AdvancedVoiceMessage($this, $chat);
         }
 
         $type               = 'GET';
         $fields             = [];
-        $options['chat_id'] = $this->chatId($user);
+        $options['chat_id'] = $this->chatId($chat);
         $options['caption'] = $caption;
 
         if (filter_var($location, FILTER_VALIDATE_URL) !== false or !is_file($location)) {
@@ -383,22 +383,22 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends a location to a bot user.
+     * Sends a location to a chat.
      *
-     * @param  mixed $user
+     * @param  mixed $chat
      * @param  float $latitude
      * @param  float $longitude
      * @param  array $options
      *
      * @return void
      */
-    public function sendLocation($user, float $latitude = 0, float $longitude = 0, array $options = [])
+    public function sendLocation($chat, float $latitude = 0, float $longitude = 0, array $options = [])
     {
         if (func_num_args() === 1) {
-            return new AdvancedLocationMessage($this, $user);
+            return new AdvancedLocationMessage($this, $chat);
         }
 
-        $options['chat_id']   = $this->chatId($user);
+        $options['chat_id']   = $this->chatId($chat);
         $options['latitude']  = $latitude;
         $options['longitude'] = $longitude;
 
@@ -406,7 +406,7 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends a venue to a bot user.
+     * Sends a venue to a chat.
      *
      * @param  mixed  $user
      * @param  float  $latitude
@@ -417,13 +417,13 @@ trait RegistersApiMethods
      *
      * @return void
      */
-    public function sendVenue($user, float $latitude = 0, float $longitude = 0, string $title = '', string $address = '', array $options = [])
+    public function sendVenue($chat, float $latitude = 0, float $longitude = 0, string $title = '', string $address = '', array $options = [])
     {
         if (func_num_args() === 1) {
-            return new AdvancedVenueMessage($this, $user);
+            return new AdvancedVenueMessage($this, $chat);
         }
 
-        $options['chat_id']   = $this->chatId($user);
+        $options['chat_id']   = $this->chatId($chat);
         $options['latitude']  = $latitude;
         $options['longitude'] = $longitude;
         $options['title']     = $title;
@@ -433,9 +433,9 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends a contact to a bot user.
+     * Sends a contact to a chat.
      *
-     * @param  mixed  $user
+     * @param  mixed  $chat
      * @param  string $phone_number
      * @param  string $first_name
      * @param  string $last_name
@@ -443,13 +443,13 @@ trait RegistersApiMethods
      *
      * @return void
      */
-    public function sendContact($user, string $phone_number = '', string $first_name = '', string $last_name = '', array $options = [])
+    public function sendContact($chat, string $phone_number = '', string $first_name = '', string $last_name = '', array $options = [])
     {
         if (func_num_args() === 1) {
-            return new AdvancedContactMessage($this, $user);
+            return new AdvancedContactMessage($this, $chat);
         }
 
-        $options['chat_id']      = $this->chatId($user);
+        $options['chat_id']      = $this->chatId($chat);
         $options['phone_number'] = $phone_number;
         $options['first_name']   = $first_name;
         $options['last_name']    = $last_name;
@@ -458,14 +458,14 @@ trait RegistersApiMethods
     }
 
     /**
-     * Sends a chat action to a bot user.
+     * Sends a chat action to a chat.
      *
-     * @param  mixed  $user
+     * @param  mixed  $chat
      * @param  string $action
      *
      * @return void
      */
-    public function sendChatAction($user, string $action)
+    public function sendChatAction($chat, string $action)
     {
         $actions = [
             'typing', 'upload_photo', 'record_video',
@@ -478,7 +478,7 @@ trait RegistersApiMethods
         }
 
         $options = [
-            'chat_id' => $this->chatId($user),
+            'chat_id' => $this->chatId($chat),
             'action'  => $action
         ];
 

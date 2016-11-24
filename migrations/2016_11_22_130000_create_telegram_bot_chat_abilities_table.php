@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTelegramBotUserAbilitiesTable extends Migration
+class CreateTelegramBotChatAbilitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,19 @@ class CreateTelegramBotUserAbilitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('telegram_bot_user_abilities', function (Blueprint $table) {
+        Schema::create('telegram_bot_chat_abilities', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('user_id')->unsigned()->index();
+            $table->integer('chat_id')->unsigned()->index();
             $table->integer('ability_id')->unsigned()->index();
 
             $table->timestamps();
 
-            $table->unique(['user_id', 'ability_id']);
+            $table->unique(['chat_id', 'ability_id']);
 
-            $table->foreign('user_id')
+            $table->foreign('chat_id')
                   ->references('id')
-                  ->on('telegram_bot_users')
+                  ->on('telegram_bot_chats')
                   ->onDelete('cascade');
 
             $table->foreign('ability_id')
@@ -42,6 +42,6 @@ class CreateTelegramBotUserAbilitiesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('telegram_bot_user_abilities');
+        Schema::drop('telegram_bot_chat_abilities');
     }
 }

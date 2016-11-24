@@ -28,6 +28,6 @@ class AdvancedStickerMessage extends AdvancedMessage
      */
     protected function handle()
     {
-        $this->manager->sendSticker($this->user, $this->sticker, $this->options);
+        $this->manager->sendSticker($this->chat, $this->sticker, $this->options);
     }
 }
