@@ -8,6 +8,7 @@ use SumanIon\TelegramBot\Jobs\SendRequest;
 use SumanIon\TelegramBot\Methods\AdvancedMessage;
 use SumanIon\TelegramBot\Methods\AdvancedAudioMessage;
 use SumanIon\TelegramBot\Methods\AdvancedPhotoMessage;
+use SumanIon\TelegramBot\Methods\AdvancedVenueMessage;
 use SumanIon\TelegramBot\Methods\AdvancedVideoMessage;
 use SumanIon\TelegramBot\Methods\AdvancedVoiceMessage;
 use SumanIon\TelegramBot\Methods\AdvancedStickerMessage;
@@ -371,5 +372,32 @@ trait RegistersApiMethods
         $options['longitude'] = $longitude;
 
         $this->sendInfo('GET', 'sendLocation', $options);
+    }
+
+    /**
+     * Sends a venue to a bot user.
+     *
+     * @param  mixed  $user
+     * @param  float  $latitude
+     * @param  float  $longitude
+     * @param  string $title
+     * @param  string $address
+     * @param  array  $options
+     *
+     * @return void
+     */
+    public function sendVenue($user, float $latitude = 0, float $longitude = 0, string $title = '', string $address = '', array $options = [])
+    {
+        if (func_num_args() === 1) {
+            return new AdvancedVenueMessage($this, $user);
+        }
+
+        $options['chat_id']   = $this->chatId($user);
+        $options['latitude']  = $latitude;
+        $options['longitude'] = $longitude;
+        $options['title']     = $title;
+        $options['address']   = $address;
+
+        $this->sendInfo('GET', 'sendVenue', $options);
     }
 }
