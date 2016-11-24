@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Queue;
 use SumanIon\TelegramBot\ParsedUpdate;
 use SumanIon\TelegramBot\Jobs\SendRequest;
 use SumanIon\TelegramBot\Methods\AdvancedMessage;
+use SumanIon\TelegramBot\Methods\AdvancedAudioMessage;
 use SumanIon\TelegramBot\Methods\AdvancedPhotoMessage;
 
 trait RegistersApiMethods
@@ -154,5 +155,43 @@ trait RegistersApiMethods
         }
 
         $this->sendInfo($type, 'sendPhoto', $options, $fields);
+    }
+
+    /**
+     * Sends an audio file to a bot user.
+     *
+     * @param  mixed  $user
+     * @param  string $location
+     * @param  string $caption
+     * @param  array  $options
+     *
+     * @return void
+     */
+    public function sendAudio($user, string $location = '', string $caption = '', array $options = [])
+    {
+        if (func_num_args() === 1) {
+            return new AdvancedAudioMessage($this, $user);
+        }
+
+        $type               = 'GET';
+        $fields             = [];
+        $options['chat_id'] = $this->chatId($user);
+        $options['caption'] = $caption;
+
+        if (filter_var($location, FILTER_VALIDATE_URL) !== false or !is_file($location)) {
+
+            $options['audio'] = $location;
+        } else {
+
+            $type = 'POST';
+            $fields['multipart'] = [
+                [
+                    'name' => 'audio',
+                    'contents' => $location
+                ]
+            ];
+        }
+
+        $this->sendInfo($type, 'sendAudio', $options, $fields);
     }
 }
