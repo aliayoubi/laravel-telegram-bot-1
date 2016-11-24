@@ -112,7 +112,7 @@ trait RegistersApiMethods
      */
     public function sendInfo(string $type, string $method, array $options = [], array $fields = [])
     {
-        Queue::push(new SendRequest($type, $this->url($method, $options), $fields));
+        Queue::push(new SendRequest(get_class($this), $type, $this->url($method, $options), $fields));
     }
 
     /**

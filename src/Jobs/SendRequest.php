@@ -3,17 +3,20 @@
 namespace SumanIon\TelegramBot\Jobs;
 
 use GuzzleHttp\Client;
+use SumanIon\TelegramBot\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendRequest implements ShouldQueue
 {
     /** @var string */
-    protected $url;
+    protected $manager;
 
     /** @var string */
     protected $type;
+
+    /** @var string */
+    protected $url;
 
     /** @var array */
     protected $fields;
@@ -21,12 +24,14 @@ class SendRequest implements ShouldQueue
     /**
      * Creates a new job instance.
      *
+     * @param string $manager
      * @param string $type
      * @param string $url
      * @param array  $fields
      */
-    public function __construct(string $type, string $url, array $fields = [])
+    public function __construct(string $manager, string $type, string $url, array $fields = [])
     {
+        $this->manager = $manager;
         $this->type    = $type;
         $this->url     = $url;
         $this->fields  = $fields;
@@ -39,6 +44,8 @@ class SendRequest implements ShouldQueue
      */
     public function handle()
     {
+        $fields = json_encode($this->fields);
+
         if (isset($this->fields['multipart'])) {
 
             $this->fields['multipart'] = (new Collection((array)$this->fields['multipart']))->map(function ($field) {
@@ -50,8 +57,13 @@ class SendRequest implements ShouldQueue
         }
 
         $response = (new Client( [ 'http_errors' => false ]))->request($this->type, $this->url, $this->fields);
-        $response = (string)$response->getBody();
 
-        Log::info("[{$this->type} {$this->url}] => {$response}");
+        Request::create([
+            'manager'  => $this->manager,
+            'type'     => $this->type,
+            'url'      => $this->url,
+            'fields'   => $fields,
+            'response' => (string)$response->getBody()
+        ]);
     }
 }
