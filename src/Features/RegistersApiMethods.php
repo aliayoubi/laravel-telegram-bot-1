@@ -8,6 +8,7 @@ use SumanIon\TelegramBot\Jobs\SendRequest;
 use SumanIon\TelegramBot\Methods\AdvancedMessage;
 use SumanIon\TelegramBot\Methods\AdvancedAudioMessage;
 use SumanIon\TelegramBot\Methods\AdvancedPhotoMessage;
+use SumanIon\TelegramBot\Methods\AdvancedVideoMessage;
 use SumanIon\TelegramBot\Methods\AdvancedStickerMessage;
 use SumanIon\TelegramBot\Methods\AdvancedDocumentMessage;
 
@@ -240,7 +241,6 @@ trait RegistersApiMethods
      *
      * @param  mixed  $user
      * @param  string $location
-     * @param  string $caption
      * @param  array  $options
      *
      * @return void
@@ -270,5 +270,43 @@ trait RegistersApiMethods
         }
 
         $this->sendInfo($type, 'sendSticker', $options, $fields);
+    }
+
+    /**
+     * Sends a video file to a bot user.
+     *
+     * @param  mixed  $user
+     * @param  string $location
+     * @param  string $caption
+     * @param  array  $options
+     *
+     * @return void
+     */
+    public function sendVideo($user, string $location = '', string $caption = '', array $options = [])
+    {
+        if (func_num_args() === 1) {
+            return new AdvancedVideoMessage($this, $user);
+        }
+
+        $type               = 'GET';
+        $fields             = [];
+        $options['chat_id'] = $this->chatId($user);
+        $options['caption'] = $caption;
+
+        if (filter_var($location, FILTER_VALIDATE_URL) !== false or !is_file($location)) {
+
+            $options['video'] = $location;
+        } else {
+
+            $type = 'POST';
+            $fields['multipart'] = [
+                [
+                    'name' => 'video',
+                    'contents' => $location
+                ]
+            ];
+        }
+
+        $this->sendInfo($type, 'sendVideo', $options, $fields);
     }
 }

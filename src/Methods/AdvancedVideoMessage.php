@@ -2,30 +2,30 @@
 
 namespace SumanIon\TelegramBot\Methods;
 
-class AdvancedAudioMessage extends AdvancedMessage
+class AdvancedVideoMessage extends AdvancedMessage
 {
     /** @var string */
-    protected $audio = '';
+    protected $video = '';
 
     /** @var string */
     protected $caption = '';
 
     /**
-     * Adds an audio file to the advanced message.
+     * Adds a video file to the advanced message.
      *
-     * @param  string $audio
+     * @param  string $video
      *
      * @return static
      */
-    public function audio(string $audio)
+    public function video(string $video)
     {
-        $this->audio = $audio;
+        $this->video = $video;
 
         return $this;
     }
 
     /**
-     * Sets the caption of the audio file.
+     * Sets the caption of the video file.
      *
      * @param  string $caption
      *
@@ -39,7 +39,7 @@ class AdvancedAudioMessage extends AdvancedMessage
     }
 
     /**
-     * Sets the duration of the audio file.
+     * Sets the duration of the video file.
      *
      * @param  int    $duration
      *
@@ -53,29 +53,29 @@ class AdvancedAudioMessage extends AdvancedMessage
     }
 
     /**
-     * Sets the performer of the audio file.
+     * Sets the width of the video file.
      *
-     * @param  string $performer
+     * @param  int    $width
      *
      * @return static
      */
-    public function performer(string $performer)
+    public function width(int $width)
     {
-        $this->options['performer'] = $performer;
+        $this->options['width'] = $width;
 
         return $this;
     }
 
     /**
-     * Sets the title of the audio file.
+     * Sets the height of the video file.
      *
-     * @param  string $title
+     * @param  int    $height
      *
      * @return static
      */
-    public function title(string $title)
+    public function height(int $height)
     {
-        $this->options['title'] = $title;
+        $this->options['height'] = $height;
 
         return $this;
     }
@@ -87,6 +87,6 @@ class AdvancedAudioMessage extends AdvancedMessage
      */
     protected function handle()
     {
-        $this->manager->sendAudio($this->user, $this->audio, $this->caption, $this->options);
+        $this->manager->sendVideo($this->user, $this->video, $this->caption, $this->options);
     }
 }
