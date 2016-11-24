@@ -43,28 +43,53 @@ trait ManagesUpdates
      */
     public function processUpdate(ParsedUpdate $update)
     {
-        $manager     = get_class($this);
-        $update_chat = $update->chat();
-        $chat        = Chat::where('manager', $manager)->where('chat_id', $update_chat->id)->first();
+        $manager    = get_class($this);
+        $chat       = $update->chat();
+        $saved_chat = Chat::where('manager', $manager)->where('chat_id', $chat->id)->first();
 
-        if (!$chat) {
+        // Save a new chat.
 
-            $chat = Chat::create([
+        if (!$saved_chat) {
+
+            $saved_chat = Chat::create([
                 'manager'    => $manager,
-                'chat_id'    => $update_chat->id,
-                'type'       => $update_chat->type,
-                'title'      => $update_chat->title,
-                'first_name' => $update_chat->first_name,
-                'last_name'  => $update_chat->last_name,
-                'username'   => $update_chat->username
+                'chat_id'    => $chat->id,
+                'type'       => $chat->type,
+                'title'      => $chat->title,
+                'first_name' => $chat->first_name,
+                'last_name'  => $chat->last_name,
+                'username'   => $chat->username
             ]);
         }
 
-        $update = Update::create([
+        // Save a new update.
+
+        $saved_update = Update::create([
             'manager' => $manager,
-            'chat_id' => $chat->id,
+            'chat_id' => $saved_chat->id,
             'content' => $update->toJson()
         ]);
+
+        // Remove the chat if the Bot was removed from the group.
+
+        if ($chat->type === 'group') {
+
+            $left_id = $update->get('message.left_chat_participant.id') ?:
+                       $update->get('message.left_chat_member.id');
+
+            if ($left_id) {
+
+                $me = $this->getMe();
+
+                if ($me) {
+
+                    if ($left_id === $me->get('id')) {
+
+                        return $saved_chat->delete();
+                    }
+                }
+            }
+        }
 
         // TODO: actually process the update.
     }
