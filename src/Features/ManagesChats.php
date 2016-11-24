@@ -8,7 +8,7 @@ use SumanIon\TelegramBot\Chat;
 trait ManagesChats
 {
     /**
-     * Lists all chats of the bot.
+     * Lists all chats of the Bot.
      *
      * @param  closure|null $custom
      *

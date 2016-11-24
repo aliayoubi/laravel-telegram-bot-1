@@ -83,8 +83,7 @@ class ParsedUpdate
      */
     public function from()
     {
-        $type = $this->type();
-        $from = $this->update[$type]['from'] ?? null;
+        $from = $this->update[$this->type()]['from'] ?? null;
 
         if (!$from or !isset($from['id'])) {
             return null;

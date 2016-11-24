@@ -43,13 +43,14 @@ trait ManagesUpdates
      */
     public function processUpdate(ParsedUpdate $update)
     {
+        $manager     = get_class($this);
         $update_chat = $update->chat();
-        $chat        = Chat::where('chat_id', $update_chat->id)->first();
+        $chat        = Chat::where('manager', $manager)->where('chat_id', $update_chat->id)->first();
 
         if (!$chat) {
 
             $chat = Chat::create([
-                'manager' => get_class($this),
+                'manager' => $manager,
                 'chat_id' => $update_chat->id,
                 'type'    => $update_chat->type,
                 'title'   => $update_chat->title
@@ -57,7 +58,7 @@ trait ManagesUpdates
         }
 
         $update = Update::create([
-            'manager' => get_class($this),
+            'manager' => $manager,
             'chat_id' => $chat->id,
             'content' => $update->toJson()
         ]);

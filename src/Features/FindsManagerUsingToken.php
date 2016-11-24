@@ -9,7 +9,7 @@ use Illuminate\Container\Container;
 trait FindsManagerUsingToken
 {
     /**
-     * Tries to find a bot manager using given token.
+     * Tries to find a Bot manager using given token.
      *
      * @param  string $token
      *

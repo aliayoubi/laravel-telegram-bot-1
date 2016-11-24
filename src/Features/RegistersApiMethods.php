@@ -19,7 +19,7 @@ use SumanIon\TelegramBot\Methods\AdvancedLocationMessage;
 trait RegistersApiMethods
 {
     /**
-     * Returns basic information about current bot.
+     * Returns basic information about current Bot.
      *
      * @return bool|\SumanIon\TelegramBot\ParsedUpdate
      */

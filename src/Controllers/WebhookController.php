@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class WebhookController extends Controller
 {
     /**
-     * Enables webhook for a bot.
+     * Enables webhook for a Bot.
      *
      * @param  \Illuminate\Http\Request $request
      * @param  string                   $token
@@ -40,7 +40,7 @@ class WebhookController extends Controller
     }
 
     /**
-     * Disables webhook for a bot.
+     * Disables webhook for a Bot.
      *
      * @param  string $token
      *
