@@ -13,7 +13,7 @@ class AdvancedMessage
     protected $user;
 
     /** @var string */
-    protected $text;
+    protected $text = '';
 
     /** @var array */
     protected $options = [];
