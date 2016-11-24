@@ -97,6 +97,20 @@ class AdvancedVenueMessage extends AdvancedMessage
     }
 
     /**
+     * Sets the foursquare id of the venue.
+     *
+     * @param  string $foursquare_id
+     *
+     * @return static
+     */
+    public function foursquareId(string $foursquare_id)
+    {
+        $this->options['foursquare_id'] = $foursquare_id;
+
+        return $this;
+    }
+
+    /**
      * Sends the request.
      *
      * @return void
