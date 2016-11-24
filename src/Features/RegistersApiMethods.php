@@ -21,7 +21,7 @@ trait RegistersApiMethods
     /**
      * Returns basic information about current bot.
      *
-     * @return \SumanIon\TelegramBot\ParsedUpdate
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
      */
     public function getMe():ParsedUpdate
     {
@@ -51,7 +51,7 @@ trait RegistersApiMethods
      *
      * @param  string $url
      *
-     * @return \SumanIon\TelegramBot\ParsedUpdate
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
      */
     public function setWebhook(string $url = ''):ParsedUpdate
     {
@@ -63,11 +63,41 @@ trait RegistersApiMethods
     /**
      * Returns information about current status of webhook.
      *
-     * @return \SumanIon\TelegramBot\ParsedUpdate
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
      */
     public function getWebhookInfo():ParsedUpdate
     {
         return current($this->sendRequest('GET', 'getWebhookInfo'));
+    }
+
+    /**
+     * Lists profile pictures of a user.
+     *
+     * @param  mixed  $user
+     * @param  int    $offset
+     * @param  int    $limit
+     *
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function getUserProfilePhotos($user, int $offset = 0, int $limit = 100)
+    {
+        return current($this->sendRequest('GET', 'getUserProfilePhotos', [
+            'user_id' => $this->chatId($user)
+        ]));
+    }
+
+    /**
+     * Gets basic information about a file and prepares it for download.
+     *
+     * @param  string $file_id
+     *
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function getFile(string $file_id)
+    {
+        return current($this->sendRequest('GET', 'getFile', [
+            'file_id' => $file_id
+        ]));
     }
 
     /**

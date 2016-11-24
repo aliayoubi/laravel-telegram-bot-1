@@ -24,6 +24,18 @@ trait SendsApiRequests
     }
 
     /**
+     * Returns full url to a file.
+     *
+     * @param  string $file_path
+     *
+     * @return string
+     */
+    public function fileUrl(string $file_path):string
+    {
+        return "https://api.telegram.org/file/bot{$this->token()}/{$file_path}";
+    }
+
+    /**
      * Sends an Api request to the Bot.
      *
      * @param  string $type
