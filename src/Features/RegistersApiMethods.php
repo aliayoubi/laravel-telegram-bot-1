@@ -8,6 +8,7 @@ use SumanIon\TelegramBot\Jobs\SendRequest;
 use SumanIon\TelegramBot\Methods\AdvancedMessage;
 use SumanIon\TelegramBot\Methods\AdvancedAudioMessage;
 use SumanIon\TelegramBot\Methods\AdvancedPhotoMessage;
+use SumanIon\TelegramBot\Methods\AdvancedStickerMessage;
 use SumanIon\TelegramBot\Methods\AdvancedDocumentMessage;
 
 trait RegistersApiMethods
@@ -232,5 +233,42 @@ trait RegistersApiMethods
         }
 
         $this->sendInfo($type, 'sendDocument', $options, $fields);
+    }
+
+    /**
+     * Sends a sticker to a bot user.
+     *
+     * @param  mixed  $user
+     * @param  string $location
+     * @param  string $caption
+     * @param  array  $options
+     *
+     * @return void
+     */
+    public function sendSticker($user, string $location = '', array $options = [])
+    {
+        if (func_num_args() === 1) {
+            return new AdvancedStickerMessage($this, $user);
+        }
+
+        $type               = 'GET';
+        $fields             = [];
+        $options['chat_id'] = $this->chatId($user);
+
+        if (filter_var($location, FILTER_VALIDATE_URL) !== false or !is_file($location)) {
+
+            $options['sticker'] = $location;
+        } else {
+
+            $type = 'POST';
+            $fields['multipart'] = [
+                [
+                    'name' => 'sticker',
+                    'contents' => $location
+                ]
+            ];
+        }
+
+        $this->sendInfo($type, 'sendSticker', $options, $fields);
     }
 }
