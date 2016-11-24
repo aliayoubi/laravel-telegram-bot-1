@@ -78,8 +78,27 @@ trait RegistersApiMethods
 
         $options['chat_id'] = $this->chatId($user);
         $options['text']    = $text;
-        $url                = $this->url('sendMessage', $options);
 
-        Queue::push(new SendRequest('GET', $url));
+        Queue::push(new SendRequest('GET', $this->url('sendMessage', $options)));
+    }
+
+    /**
+     * Forwards a message to a bot user.
+     *
+     * @param  mixed  $user
+     * @param  int    $from_chat_id
+     * @param  int    $message_id
+     * @param  bool   $disable_notification
+     *
+     * @return void
+     */
+    public function forwardMessage($user, int $from_chat_id, int $message_id, bool $disable_notification = false)
+    {
+        Queue::push(new SendRequest('GET', $this->url('forwardMessage', [
+            'chat_id'              => $this->chatId($user),
+            'from_chat_id'         => $from_chat_id,
+            'message_id'           => $message_id,
+            'disable_notification' => $disable_notification
+        ])));
     }
 }
