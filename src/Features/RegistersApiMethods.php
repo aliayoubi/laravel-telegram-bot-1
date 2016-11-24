@@ -11,6 +11,7 @@ use SumanIon\TelegramBot\Methods\AdvancedPhotoMessage;
 use SumanIon\TelegramBot\Methods\AdvancedVenueMessage;
 use SumanIon\TelegramBot\Methods\AdvancedVideoMessage;
 use SumanIon\TelegramBot\Methods\AdvancedVoiceMessage;
+use SumanIon\TelegramBot\Methods\AdvancedContactMessage;
 use SumanIon\TelegramBot\Methods\AdvancedStickerMessage;
 use SumanIon\TelegramBot\Methods\AdvancedDocumentMessage;
 use SumanIon\TelegramBot\Methods\AdvancedLocationMessage;
@@ -399,5 +400,30 @@ trait RegistersApiMethods
         $options['address']   = $address;
 
         $this->sendInfo('GET', 'sendVenue', $options);
+    }
+
+    /**
+     * Sends a contact to a bot user.
+     *
+     * @param  mixed  $user
+     * @param  string $phone_number
+     * @param  string $first_name
+     * @param  string $last_name
+     * @param  array  $options
+     *
+     * @return void
+     */
+    public function sendContact($user, string $phone_number = '', string $first_name = '', string $last_name = '', array $options = [])
+    {
+        if (func_num_args() === 1) {
+            return new AdvancedContactMessage($this, $user);
+        }
+
+        $options['chat_id']      = $this->chatId($user);
+        $options['phone_number'] = $phone_number;
+        $options['first_name']   = $first_name;
+        $options['last_name']    = $last_name;
+
+        $this->sendInfo('GET', 'sendContact', $options);
     }
 }
