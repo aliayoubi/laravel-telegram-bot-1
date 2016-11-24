@@ -77,27 +77,6 @@ class ParsedUpdate
     }
 
     /**
-     * Returns information about the user who initiated the update.
-     *
-     * @return null|stdClass
-     */
-    public function from()
-    {
-        $from = $this->update[$this->type()]['from'] ?? null;
-
-        if (!$from or !isset($from['id'])) {
-            return null;
-        }
-
-        return (object)[
-            'id'         => $from['id'],
-            'first_name' => $from['first_name'] ?? null,
-            'last_name'  => $from['last_name'] ?? null,
-            'username'   => $from['username'] ?? null
-        ];
-    }
-
-    /**
      * Returns information about the chat who initiated the update.
      *
      * @throws \SumanIon\TelegramBot\Exceptions\UnknownUpdateChat
@@ -113,9 +92,12 @@ class ParsedUpdate
         }
 
         return (object)[
-            'id'    => $chat['id'],
-            'type'  => $chat['type'],
-            'title' => $chat['title'] ?? null
+            'id'         => $chat['id'],
+            'type'       => $chat['type'],
+            'title'      => $chat['title'] ?? null,
+            'first_name' => $chat['first_name'] ?? null,
+            'last_name'  => $chat['last_name'] ?? null,
+            'username'   => $chat['username'] ?? null
         ];
     }
 

@@ -50,10 +50,13 @@ trait ManagesUpdates
         if (!$chat) {
 
             $chat = Chat::create([
-                'manager' => $manager,
-                'chat_id' => $update_chat->id,
-                'type'    => $update_chat->type,
-                'title'   => $update_chat->title
+                'manager'    => $manager,
+                'chat_id'    => $update_chat->id,
+                'type'       => $update_chat->type,
+                'title'      => $update_chat->title,
+                'first_name' => $update_chat->first_name,
+                'last_name'  => $update_chat->last_name,
+                'username'   => $update_chat->username
             ]);
         }
 

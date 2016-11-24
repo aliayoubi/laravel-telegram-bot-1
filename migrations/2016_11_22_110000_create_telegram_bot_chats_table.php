@@ -20,6 +20,9 @@ class CreateTelegramBotChatsTable extends Migration
             $table->integer('chat_id');
             $table->string('type');
             $table->string('title')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('username')->nullable();
 
             $table->unique(['manager', 'chat_id']);
 

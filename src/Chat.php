@@ -16,6 +16,9 @@ class Chat extends Model
         'manager',
         'chat_id',
         'type',
-        'title'
+        'title',
+        'first_name',
+        'last_name',
+        'username'
     ];
 }
