@@ -8,6 +8,7 @@ use SumanIon\TelegramBot\Jobs\SendRequest;
 use SumanIon\TelegramBot\Methods\AdvancedMessage;
 use SumanIon\TelegramBot\Methods\AdvancedAudioMessage;
 use SumanIon\TelegramBot\Methods\AdvancedPhotoMessage;
+use SumanIon\TelegramBot\Methods\AdvancedDocumentMessage;
 
 trait RegistersApiMethods
 {
@@ -193,5 +194,43 @@ trait RegistersApiMethods
         }
 
         $this->sendInfo($type, 'sendAudio', $options, $fields);
+    }
+
+    /**
+     * Sends a document to a bot user.
+     *
+     * @param  mixed  $user
+     * @param  string $location
+     * @param  string $caption
+     * @param  array  $options
+     *
+     * @return void
+     */
+    public function sendDocument($user, string $location = '', string $caption = '', array $options = [])
+    {
+        if (func_num_args() === 1) {
+            return new AdvancedDocumentMessage($this, $user);
+        }
+
+        $type               = 'GET';
+        $fields             = [];
+        $options['chat_id'] = $this->chatId($user);
+        $options['caption'] = $caption;
+
+        if (filter_var($location, FILTER_VALIDATE_URL) !== false or !is_file($location)) {
+
+            $options['document'] = $location;
+        } else {
+
+            $type = 'POST';
+            $fields['multipart'] = [
+                [
+                    'name' => 'document',
+                    'contents' => $location
+                ]
+            ];
+        }
+
+        $this->sendInfo($type, 'sendDocument', $options, $fields);
     }
 }
