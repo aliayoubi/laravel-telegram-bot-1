@@ -426,4 +426,32 @@ trait RegistersApiMethods
 
         $this->sendInfo('GET', 'sendContact', $options);
     }
+
+    /**
+     * Sends a chat action to a bot user.
+     *
+     * @param  mixed  $user
+     * @param  string $action
+     *
+     * @return void
+     */
+    public function sendChatAction($user, string $action)
+    {
+        $actions = [
+            'typing', 'upload_photo', 'record_video',
+            'upload_video', 'record_audio', 'upload_audio',
+            'upload_document', 'find_location'
+        ];
+
+        if (!in_array($action, $actions)) {
+            return;
+        }
+
+        $options = [
+            'chat_id' => $this->chatId($user),
+            'action'  => $action
+        ];
+
+        $this->sendInfo('GET', 'sendChatAction', $options);
+    }
 }
