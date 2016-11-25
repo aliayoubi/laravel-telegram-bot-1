@@ -10,7 +10,7 @@
 @endphp
 
 @if ($chats->total())
-    <h3>Chats {{ $chats->total() }}</h3>
+    <h3>Chats ({{ $chats->total() }})</h3>
     @foreach ($chats as $chat)
         @include('telegram::partials.chats.chat')
     @endforeach

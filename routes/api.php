@@ -9,3 +9,4 @@ $router->get('/telegram-bot/{token}/chat/{id}/delete', 'TelegramBotController@de
 $router->post('/telegram-bot/{token}/ability', 'TelegramBotController@createAbility');
 $router->get('/telegram-bot/{token}/ability/{id}/delete', 'TelegramBotController@deleteAbility');
 $router->post('/telegram-bot/{token}/chat/{id}/abilities', 'TelegramBotController@updateChatAbilities');
+$router->get('/telegram-bot/{token}/update/{id}/delete', 'TelegramBotController@deleteUpdate');

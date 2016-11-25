@@ -32,6 +32,11 @@ trait ManagesUpdates
         $updates     = $this->getUpdates($last_update ? $last_update->content->id() + 1 : 0);
 
         (new Collection($updates))->each([$this, 'processUpdate']);
+
+        // Prevent duplicated updates.
+
+        $last_update = Update::where('manager', $this->name())->orderBy('id', 'desc')->first();
+        $this->getUpdates($last_update ? $last_update->content->id() + 1 : 0);
     }
 
     /**

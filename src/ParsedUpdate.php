@@ -117,10 +117,12 @@ class ParsedUpdate
     /**
      * Converts current update to a JSON string.
      *
+     * @param  mixed  $flags
+     *
      * @return string
      */
-    public function toJson():string
+    public function toJson($flags = null):string
     {
-        return json_encode($this->update);
+        return json_encode($this->update, $flags);
     }
 }

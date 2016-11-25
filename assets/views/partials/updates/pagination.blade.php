@@ -3,18 +3,18 @@
 
     <div class="ui mini pagination menu">
 
-        @if ($chats->currentPage() > 1)
-            <a href="{{ $chats->previousPageUrl() }}" class="item">
+        @if ($updates->currentPage() > 1)
+            <a href="{{ $updates->previousPageUrl() }}" class="item">
                 Previous Page
             </a>
         @endif
 
         <div class="disabled item">
-            {{ $chats->currentPage() }}
+            {{ $updates->currentPage() }}
         </div>
 
-        @if ($chats->currentPage() < $chats->lastPage())
-            <a href="{{ $chats->nextPageUrl() }}" class="item">
+        @if ($updates->currentPage() < $updates->lastPage())
+            <a href="{{ $updates->nextPageUrl() }}" class="item">
                 Next Page
             </a>
         @endif

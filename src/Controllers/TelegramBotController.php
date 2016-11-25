@@ -4,6 +4,7 @@ namespace SumanIon\TelegramBot\Controllers;
 
 use Illuminate\Http\Request;
 use SumanIon\TelegramBot\Chat;
+use SumanIon\TelegramBot\Update;
 use SumanIon\TelegramBot\Ability;
 use SumanIon\TelegramBot\Manager;
 use SumanIon\TelegramBot\Request as BotRequest;
@@ -26,7 +27,7 @@ class TelegramBotController extends Controller
         $bots = Manager::findAllManagers();
         $show = $request->input('show') ?: 'overview';
 
-        return view('telegram::index', compact('bot', 'bots', 'token', 'show'));
+        return view('telegram::index', compact('bot', 'bots', 'token', 'show', 'request'));
     }
 
     /**
@@ -108,5 +109,25 @@ class TelegramBotController extends Controller
         $chat->abilities()->sync((array)$request->input('abilities'));
 
         return redirect("/api/telegram-bot/{$token}?show=chats&page={$request->input('page')}");
+    }
+
+    /**
+     * Deletes an update.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  string                   $token
+     * @param  int                      $id
+     *
+     * @return mixed
+     */
+    public function deleteUpdate(Request $request, $token, $id)
+    {
+        $this->findManager($token);
+
+        $update = Update::where('id', $id)->firstOrFail();
+
+        $update->delete();
+
+        return redirect("/api/telegram-bot/{$token}?show=updates&id={$request->input('id')}");
     }
 }
