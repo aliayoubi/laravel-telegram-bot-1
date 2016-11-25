@@ -3,8 +3,8 @@
 
 <style>
     .app-update-content, .app-update-content code {
-        margin: 0;
         max-height: 300px;
+        margin: 0;
         font-size: 13px;
         line-height: 13px;
     }

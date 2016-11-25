@@ -47,7 +47,7 @@
                 </td>
             </tr>
             <tr>
-                <td><strong>Abilities</strong></td>
+                <td class="top aligned"><strong>Abilities</strong></td>
                 <td>
                     <form action="/api/telegram-bot/{{ $token }}/chat/{{ $chat->id }}/abilities?page={{ $chats->currentPage() }}" method="POST">
                         <select name="abilities[]" multiple="" class="ui fluid dropdown">
