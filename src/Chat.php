@@ -21,4 +21,24 @@ class Chat extends Model
         'last_name',
         'username'
     ];
+
+    /**
+     * A chat may receive many updates.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function updates()
+    {
+        return $this->hasMany(Update::class, 'chat_id');
+    }
+
+    /**
+     * A chat may have many requests.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function requests()
+    {
+        return $this->hasMany(Request::class, 'chat_id');
+    }
 }

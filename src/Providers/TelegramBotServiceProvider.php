@@ -13,6 +13,7 @@ class TelegramBotServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app['view']->addNamespace('telegram', __DIR__ . '/../../assets/views');
         $this->loadMigrationsFrom(__DIR__ . '/../../migrations');
         $this->loadCustomRoutes();
     }
@@ -31,9 +32,9 @@ class TelegramBotServiceProvider extends ServiceProvider
                 'prefix'    => 'api'
             ], function () {
 
-                $this->app->get('/telegram-bot/webhook/{token}/enable', 'WebhookController@enable');
-                $this->app->get('/telegram-bot/webhook/{token}/disable', 'WebhookController@disable');
-                $this->app->post('/telegram-bot/webhook/{token}', 'WebhookController@handle');
+                $router = $this->app;
+
+                require __DIR__ . '/../../routes/api.php';
             });
 
         } else {
@@ -44,9 +45,9 @@ class TelegramBotServiceProvider extends ServiceProvider
                 'prefix' => 'api',
             ], function () {
 
-                $this->app['router']->get('/telegram-bot/webhook/{token}/enable', 'WebhookController@enable');
-                $this->app['router']->get('/telegram-bot/webhook/{token}/disable', 'WebhookController@disable');
-                $this->app['router']->post('/telegram-bot/webhook/{token}', 'WebhookController@handle');
+                $router = $this->app['router'];
+
+                require __DIR__ . '/../../routes/api.php';
             });
         }
     }

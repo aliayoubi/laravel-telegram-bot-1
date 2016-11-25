@@ -16,14 +16,14 @@ trait ManagesChats
      */
     public function chats(closure $custom = null)
     {
-        $query = Chat::with('abilities')->where('manager', get_class($this));
+        $query = Chat::with('abilities')->where('manager', $this->name())->orderBy('id', 'desc');
 
         if ($custom) {
 
             return $custom($query);
         }
 
-        return $query->orderBy('id', 'desc')->get();
+        return $query->get();
     }
 
     /**

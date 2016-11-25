@@ -23,7 +23,7 @@ trait RegistersApiMethods
      *
      * @return bool|\SumanIon\TelegramBot\ParsedUpdate
      */
-    public function getMe():ParsedUpdate
+    public function getMe()
     {
         return current($this->sendRequest('GET', 'getMe'));
     }
@@ -53,7 +53,7 @@ trait RegistersApiMethods
      *
      * @return bool|\SumanIon\TelegramBot\ParsedUpdate
      */
-    public function setWebhook(string $url = ''):ParsedUpdate
+    public function setWebhook(string $url = '')
     {
         return current($this->sendRequest('GET', 'setWebhook', [
             'url' => $url
@@ -65,7 +65,7 @@ trait RegistersApiMethods
      *
      * @return bool|\SumanIon\TelegramBot\ParsedUpdate
      */
-    public function getWebhookInfo():ParsedUpdate
+    public function getWebhookInfo()
     {
         return current($this->sendRequest('GET', 'getWebhookInfo'));
     }
@@ -112,7 +112,7 @@ trait RegistersApiMethods
      */
     public function sendInfo(string $type, string $method, array $options = [], array $fields = [])
     {
-        Queue::push(new SendRequest(get_class($this), $type, $this->url($method, $options), $fields));
+        Queue::push(new SendRequest($this->name(), $options['chat_id'], $type, $this->url($method, $options), $fields));
     }
 
     /**

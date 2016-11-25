@@ -4,9 +4,7 @@ namespace SumanIon\TelegramBot\Controllers;
 
 use Illuminate\Http\Request;
 use SumanIon\TelegramBot\Manager;
-use Illuminate\Container\Container;
 use Illuminate\Support\Facades\URL;
-use App\Http\Controllers\Controller;
 
 class WebhookController extends Controller
 {
@@ -20,23 +18,23 @@ class WebhookController extends Controller
      */
     public function enable(Request $request, $token)
     {
-        $manager = Manager::findManagerWithToken($token);
+        $this->findManager($token);
 
-        if (!$manager) {
-
-            return Container::getInstance()->abort(404);
-        }
+        $bot  = $this->manager;
+        $bots = Manager::findAllManagers();
+        $type = 'ssl';
+        $show = 'enable';
 
         if (!$request->secure() and $request->server('HTTP_X_FORWARDED_PROTO') !== 'https') {
 
-            return 'To enable webhook, please visit this page using HTTPS.
-                    <br><b>Note:</b> You must have a valid SSL certificate to be able to use webhook.';
+            return view('telegram::webhook', compact('bot', 'bots', 'type', 'token', 'show'));
         }
 
-        $manager->setWebhook(URL::to("/api/telegram-bot/webhook/{$token}", null, true));
+        $this->manager->setWebhook(URL::to("/api/telegram-bot/webhook/{$token}", null, true));
 
-        return 'Webhook was successfully <b>enabled</b> for [<b>' . get_class($manager) . '</b>]
-                <br><b>Note:</b> You will not be able to receive updates using getUpdates for as long as an outgoing webhook is set up.';
+        $type = 'enabled';
+
+        return view('telegram::webhook', compact('bot', 'bots', 'type', 'token', 'show'));
     }
 
     /**
@@ -48,17 +46,16 @@ class WebhookController extends Controller
      */
     public function disable($token)
     {
-        $manager = Manager::findManagerWithToken($token);
+        $this->findManager($token);
 
-        if (!$manager) {
+        $this->manager->setWebhook('');
 
-            return Container::getInstance()->abort(404);
-        }
+        $bot  = $this->manager;
+        $bots = Manager::findAllManagers();
+        $type = 'disabled';
+        $show = 'disable';
 
-        $manager->setWebhook('');
-
-        return 'Webhook was successfully <b>disabled</b> for [<b>' . get_class($manager) . '</b>]
-                <br><b>Note:</b> Now you should handle incoming updates manually.';
+        return view('telegram::webhook', compact('bot', 'bots', 'type', 'token', 'show'));
     }
 
     /**
@@ -71,14 +68,9 @@ class WebhookController extends Controller
      */
     public function handle(Request $request, $token)
     {
-        $manager = Manager::findManagerWithToken($token);
+        $this->findManager($token);
 
-        if (!$manager) {
-
-            return Container::getInstance()->abort(404);
-        }
-
-        $manager->webhook($request->getContent());
+        $this->manager->webhook($request->getContent());
 
         return 'OK';
     }

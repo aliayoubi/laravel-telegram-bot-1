@@ -28,7 +28,7 @@ trait ManagesUpdates
      */
     public function updates()
     {
-        $last_update = Update::where('manager', get_class($this))->orderBy('id', 'desc')->first();
+        $last_update = Update::where('manager', $this->name())->orderBy('id', 'desc')->first();
         $updates     = $this->getUpdates($last_update ? $last_update->content->id() + 1 : 0);
 
         (new Collection($updates))->each([$this, 'processUpdate']);
@@ -43,16 +43,15 @@ trait ManagesUpdates
      */
     public function processUpdate(ParsedUpdate $update)
     {
-        $manager    = get_class($this);
         $chat       = $update->chat();
-        $saved_chat = Chat::where('manager', $manager)->where('chat_id', $chat->id)->first();
+        $saved_chat = Chat::where('manager', $this->name())->where('chat_id', $chat->id)->first();
 
         // Save a new chat.
 
         if (!$saved_chat) {
 
             $saved_chat = Chat::create([
-                'manager'    => $manager,
+                'manager'    => $this->name(),
                 'chat_id'    => $chat->id,
                 'type'       => $chat->type,
                 'title'      => $chat->title,
@@ -65,7 +64,7 @@ trait ManagesUpdates
         // Save a new update.
 
         $saved_update = Update::create([
-            'manager' => $manager,
+            'manager' => $this->name(),
             'chat_id' => $saved_chat->id,
             'content' => $update->toJson()
         ]);

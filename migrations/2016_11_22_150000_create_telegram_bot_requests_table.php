@@ -17,12 +17,18 @@ class CreateTelegramBotRequestsTable extends Migration
             $table->increments('id');
 
             $table->string('manager');
+            $table->integer('chat_id')->unsigned();
             $table->string('type');
             $table->text('url')->nullable();
             $table->text('fields')->nullable();
             $table->text('response')->nullable();
 
             $table->timestamps();
+
+            $table->foreign('chat_id')
+                  ->references('id')
+                  ->on('telegram_bot_chats')
+                  ->onDelete('cascade');
         });
     }
 

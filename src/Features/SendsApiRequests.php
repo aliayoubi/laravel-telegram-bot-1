@@ -67,7 +67,7 @@ trait SendsApiRequests
 
         if (!is_object($parsed) or !isset($parsed->ok) or $parsed->ok !== true) {
 
-            Log::error('[' . get_class($this) . '] in [' . $url . '] => ' . (string)$response->getBody());
+            Log::error('[' . $this->name() . '] in [' . $url . '] => ' . (string)$response->getBody());
 
             return [];
         }

@@ -16,4 +16,24 @@ abstract class Manager
      * @return string
      */
     abstract public function token();
+
+    /**
+     * Returns FQCN of the Bot manager.
+     *
+     * @param  bool   $full
+     *
+     * @return string
+     */
+    public function name(bool $full = true):string
+    {
+        $namespace = get_class($this);
+
+        if ($full) {
+            return $namespace;
+        }
+
+        $namespace = explode('\\', $namespace);
+
+        return end($namespace);
+    }
 }

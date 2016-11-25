@@ -12,6 +12,7 @@ class Request extends Model
     /** @var array */
     protected $fillable = [
         'manager',
+        'chat_id',
         'type',
         'url',
         'fields',
