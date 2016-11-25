@@ -43,6 +43,7 @@ class TelegramBotController extends Controller
         $this->findManager($token);
 
         $chat = Chat::where('id', $id)->firstOrFail();
+
         $chat->delete();
 
         return redirect("/api/telegram-bot/{$token}?show=chats&page={$request->input('page')}");

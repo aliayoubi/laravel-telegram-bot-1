@@ -12,7 +12,7 @@
                     @endif
                 </td>
                 <td class="right aligned">
-                    <a href="/api/telegram-bot/{{ $token }}/{{ $chat->id }}/delete" class="ui mini red icon button">
+                    <a href="/api/telegram-bot/{{ $token }}/chat/{{ $chat->id }}/delete" class="ui mini red icon button">
                         <i class="delete icon"></i>
                     </a>
                 </td>
@@ -49,7 +49,7 @@
             <tr>
                 <td><strong>Abilities</strong></td>
                 <td>
-                    <form action="/api/telegram-bot/{{ $token }}/{{ $chat->id }}/abilities" method="POST">
+                    <form action="/api/telegram-bot/{{ $token }}/chat/{{ $chat->id }}/abilities" method="POST">
                         <select name="abilities[]" multiple="" class="ui fluid dropdown">
                             @php
                                 $chat_abilities = $chat->abilities->map(function ($ability) {

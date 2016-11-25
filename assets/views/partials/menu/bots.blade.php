@@ -4,9 +4,9 @@
         <i class="send icon"></i>
         <span class="text">{{ $bot->name(false) }}</span>
         <div class="menu">
-            @foreach($bots as $bot)
-                <a href="/api/telegram-bot/{{ $bot->token() }}" class="{{ $token === $bot->token() ? 'active' : '' }} item">
-                    {{ $bot->name(false) }}
+            @foreach($bots as $_bot)
+                <a href="/api/telegram-bot/{{ $_bot->token() }}" class="{{ $token === $_bot->token() ? 'active' : '' }} item">
+                    {{ $_bot->name(false) }}
                 </a>
             @endforeach
         </div>

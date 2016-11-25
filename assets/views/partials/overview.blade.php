@@ -28,24 +28,24 @@
                     $abilities = \SumanIon\TelegramBot\Ability::orderBy('id', 'desc')->get();
                 @endphp
 
-                <form action="/api/telegram-bot/{{ $token }}/create-ability" method="POST" class="ui form">
-                    <div class="field">
+                <form action="/api/telegram-bot/{{ $token }}/ability" method="POST" class="ui form">
+                    <div class="ui action input">
                         <input type="text" name="name" autocomplete="off" spellcheck="false">
-                    </div>
-                    <div class="field">
                         <button class="ui mini button" type="submit">CREATE</button>
                     </div>
                 </form>
 
-                <div class="ui bulleted list">
-                    @foreach ($abilities as $ability)
-                        <div class="item">
-                            {{ $ability->name }}
-                            <a href="/api/telegram-bot/{{ $token }}/delete-ability/{{ $ability->id }}" style="font-size: 10px; margin-left: 5px">
-                                DELETE
-                            </a>
-                        </div>
-                    @endforeach
+                <div style="margin-top: 20px">
+                    <div class="ui bulleted list">
+                        @foreach ($abilities as $ability)
+                            <div class="item">
+                                {{ $ability->name }}
+                                <a href="/api/telegram-bot/{{ $token }}/ability/{{ $ability->id }}/delete" style="font-size: 10px; margin-left: 5px">
+                                    DELETE
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </td>
         </tr>
