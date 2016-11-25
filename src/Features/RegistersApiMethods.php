@@ -484,4 +484,130 @@ trait RegistersApiMethods
 
         $this->sendInfo('GET', 'sendChatAction', $options);
     }
+
+    /**
+     * Kicks a user from a chat.
+     *
+     * @param  mixed  $chat
+     * @param  int    $user_id
+     *
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function kickChatMember($chat, int $user_id)
+    {
+        return current($this->sendRequest('GET', 'kickChatMember', [
+            'chat_id' => $this->chatId($chat),
+            'user_id' => $user_id
+        ]));
+    }
+
+    /**
+     * Leaves from a chat.
+     *
+     * @param  mixed  $chat
+     *
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function leaveChat($chat)
+    {
+        return current($this->sendRequest('GET', 'leaveChat', [
+            'chat_id' => $this->chatId($chat)
+        ]));
+    }
+
+    /**
+     * Unbans previously kicked user.
+     *
+     * @param  mixed  $chat
+     * @param  int    $user_id
+     *
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function unbanChatMember($chat, int $user_id)
+    {
+        return current($this->sendRequest('GET', 'unbanChatMember', [
+            'chat_id' => $this->chatId($chat),
+            'user_id' => $user_id
+        ]));
+    }
+
+    /**
+     * Returns up-to-date information about a chat.
+     *
+     * @param  mixed  $chat
+     *
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function getChat($chat)
+    {
+        return current($this->sendRequest('GET', 'getChat', [
+            'chat_id' => $this->chatId($chat)
+        ]));
+    }
+
+    /**
+     * Returns a list of administrators in a chat.
+     *
+     * @param  mixed  $chat
+     *
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function getChatAdministrators($chat)
+    {
+        return current($this->sendRequest('GET', 'getChatAdministrators', [
+            'chat_id' => $this->chatId($chat)
+        ]));
+    }
+
+    /**
+     * Returns the number of members in a chat.
+     *
+     * @param  mixed  $chat
+     *
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function getChatMembersCount($chat)
+    {
+        return current($this->sendRequest('GET', 'getChatMembersCount', [
+            'chat_id' => $this->chatId($chat)
+        ]));
+    }
+
+    /**
+     * Returns up-to-date information about a member of a chat.
+     *
+     * @param  mixed  $chat
+     * @param  int    $user_id
+     *
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function getChatMember($chat, int $user_id)
+    {
+        return current($this->sendRequest('GET', 'getChatMember', [
+            'chat_id' => $this->chatId($chat),
+            'user_id' => $user_id
+        ]));
+    }
+
+    /**
+     * Sends an answer to a callback query.
+     *
+     * @param  string $id
+     * @param  string $text
+     * @param  bool   $show_alert
+     * @param  string $url
+     * @param  int    $cache_time
+     *
+     * @return bool|\SumanIon\TelegramBot\ParsedUpdate
+     */
+    public function answerCallbackQuery(string $id, string $text = '', bool $show_alert = false, string $url = '', int $cache_time = 0)
+    {
+        return current($this->sendRequest('GET', 'answerCallbackQuery', [
+            'callback_query_id' => $id,
+            'text'              => $text,
+            'show_alert'        => $show_alert,
+            'url'               => $url,
+            'cache_time'        => $cache_time
+        ]));
+    }
 }
