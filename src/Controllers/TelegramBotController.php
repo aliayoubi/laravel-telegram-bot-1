@@ -46,7 +46,7 @@ class TelegramBotController extends Controller
 
         $chat->delete();
 
-        return redirect("/api/telegram-bot/{$token}?show=chats&page={$request->input('page')}");
+        return redirect("/api/telegram-bot/{$token}?show=chats");
     }
 
     /**
