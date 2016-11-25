@@ -130,4 +130,24 @@ class TelegramBotController extends Controller
 
         return redirect("/api/telegram-bot/{$token}?show=updates&id={$request->input('id')}");
     }
+
+    /**
+     * Deletes a request.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  string                   $token
+     * @param  int                      $id
+     *
+     * @return mixed
+     */
+    public function deleteRequest(Request $request, $token, $id)
+    {
+        $this->findManager($token);
+
+        $bot_request = BotRequest::where('id', $id)->firstOrFail();
+
+        $bot_request->delete();
+
+        return redirect("/api/telegram-bot/{$token}?show=requests&id={$request->input('id')}");
+    }
 }
