@@ -11,10 +11,12 @@
 </style>
 
 @php
-    $chat    = \SumanIon\TelegramBot\Chat::where('id', $request->id)->first();
-    $updates = $chat->updates()->orderBy('id', 'desc')->paginate(20);
+    $chat    = \SumanIon\TelegramBot\Chat::where('id', $request->input('id'))->first();
 
-    $updates->appends([ 'show' => 'updates', 'id' => $chat->id ]);
+    if ($chat) {
+        $updates = $chat->updates()->orderBy('id', 'desc')->paginate(20);
+        $updates->appends([ 'show' => 'updates', 'id' => $chat->id ]);
+    }
 @endphp
 
 @if ($chat)
