@@ -5,6 +5,7 @@ $router->get('/telegram-bot/webhook/{token}/disable', 'WebhookController@disable
 $router->post('/telegram-bot/webhook/{token}', 'WebhookController@handle');
 
 $router->get('/telegram-bot/{token}', 'TelegramBotController@index');
+$router->get('/telegram-bot/{token}/refresh-updates', 'TelegramBotController@refreshUpdates');
 $router->get('/telegram-bot/{token}/chat/{id}/delete', 'TelegramBotController@deleteChat');
 $router->post('/telegram-bot/{token}/ability', 'TelegramBotController@createAbility');
 $router->get('/telegram-bot/{token}/ability/{id}/delete', 'TelegramBotController@deleteAbility');

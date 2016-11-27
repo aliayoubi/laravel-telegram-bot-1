@@ -31,6 +31,22 @@ class TelegramBotController extends Controller
     }
 
     /**
+     * Handles new updates.
+     *
+     * @param  string $token
+     *
+     * @return mixed
+     */
+    public function refreshUpdates($token)
+    {
+        $this->findManager($token);
+
+        $this->manager->updates();
+
+        return redirect("/api/telegram-bot/{$token}");
+    }
+
+    /**
      * Deletes a chat.
      *
      * @param  \Illuminate\Http\Request $request

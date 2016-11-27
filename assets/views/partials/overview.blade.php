@@ -15,7 +15,10 @@
         </tr>
         <tr>
             <td class="collapsing"><strong>Number of Updates</strong></td>
-            <td>{{ \SumanIon\TelegramBot\Update::where('manager', $bot->name())->count() }}</td>
+            <td>
+                {{ \SumanIon\TelegramBot\Update::where('manager', $bot->name())->count() }}
+                <a href="/api/telegram-bot/{{ $token }}/refresh-updates" style="margin-left: 5px">refresh</a>
+            </td>
         </tr>
         <tr>
             <td class="collapsing"><strong>Number of Requests</strong></td>
